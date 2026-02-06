@@ -40,3 +40,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+/Eco-Bliss-Bath-V2/mysql/
