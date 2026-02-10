@@ -78,8 +78,8 @@ describe('SMOKE TESTS - Bilan de campagne', () => {
       
       // Se connecter
       cy.visit('http://localhost:4200/#/login');
-      cy.get('[data-cy=login-input-username]').type('test@test.com');
-      cy.get('[data-cy=login-input-password]').type('test123');
+      cy.get('[data-cy=login-input-username]').type('test2@test.fr');
+      cy.get('[data-cy=login-input-password]').type('testtest');
       cy.get('[data-cy=login-submit]').click();
       cy.url().should('not.include', '/login');
       cy.log('✓ Connexion effectuée');
