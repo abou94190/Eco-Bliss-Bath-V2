@@ -72,8 +72,8 @@ describe('Tests API POST', () => {
         method: 'POST',
         url: `${API_URL}/login`,
         body: {
-          username: 'test@test.com',
-          password: 'test123'
+          username: 'test2@test.fr',
+          password: 'testtest'
         }
       }).then((response) => {
         cy.log(`Status reçu : ${response.status}`);
@@ -148,8 +148,8 @@ describe('Tests API POST', () => {
         method: 'POST',
         url: `${API_URL}/login`,
         body: {
-          username: 'test@test.com',
-          password: 'test123'
+          username: 'test2@test.fr',
+          password: 'testtest'
         }
       }).then((response) => {
         authToken = response.body.token;
@@ -376,8 +376,8 @@ describe('Tests API POST', () => {
         method: 'POST',
         url: `${API_URL}/login`,
         body: {
-          username: 'test@test.com',
-          password: 'test123'
+          username: 'test2@test.fr',
+          password: 'testtest'
         }
       }).then((response) => {
         authToken = response.body.token;

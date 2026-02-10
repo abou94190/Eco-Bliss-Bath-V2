@@ -33,8 +33,8 @@ describe('Tests API GET', () => {
         method: 'POST',
         url: `${API_URL}/login`,
         body: {
-          username: 'test@test.com',
-          password: 'test123'
+          username: 'test2@test.fr',
+          password: 'testtest'
         }
       }).then((response) => {
         expect(response.status).to.eq(200);
