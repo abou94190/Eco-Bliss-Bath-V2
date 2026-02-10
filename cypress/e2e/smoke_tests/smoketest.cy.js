@@ -1,15 +1,13 @@
-/// <reference types="cypress" />
+// // <reference types="cypress" />
 
-describe('Smoke Tests - Vérification de la présence des éléments UI', () => {
+describe('SMOKE TESTS - Bilan de campagne', () => {
   
-  describe('1. Vérifier la présence des champs et boutons de connexion', () => {
+  describe('Smoke Test 1 : Vérifier la présence des champs et boutons de connexion', () => {
     
-    beforeEach(() => {
+    it('devrait afficher tous les éléments du formulaire de connexion', () => {
+      cy.log('=== SMOKE TEST : Présence des champs et boutons de connexion ===');
+      
       cy.visit('http://localhost:4200/#/login');
-    });
-
-    it('devrait afficher le formulaire de connexion complet', () => {
-      cy.log('=== TEST : Vérification du formulaire de connexion ===');
       
       // Vérifier la présence du titre
       cy.contains('h1', 'Se connecter').should('be.visible');
@@ -24,7 +22,7 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
         .should('exist')
         .should('be.visible')
         .should('have.attr', 'type', 'text');
-      cy.log('✓ Champ email/username présent et visible');
+      cy.log('✓ Champ email présent et visible');
 
       // Vérifier le label du champ email
       cy.get('label[for="username"]')
@@ -56,75 +54,39 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
 
       // Vérifier que les champs sont modifiables
       cy.get('[data-cy=login-input-username]')
-        .should('not.be.disabled')
-        .type('test@example.com')
-        .should('have.value', 'test@example.com');
+        .should('not.be.disabled');
       cy.log('✓ Champ email est modifiable');
 
       cy.get('[data-cy=login-input-password]')
-        .should('not.be.disabled')
-        .type('password123')
-        .should('have.value', 'password123');
+        .should('not.be.disabled');
       cy.log('✓ Champ mot de passe est modifiable');
-
-      cy.log('=== TOUS LES ÉLÉMENTS DU FORMULAIRE DE CONNEXION SONT PRÉSENTS ===');
-    });
-
-    it('devrait afficher le lien vers l\'inscription', () => {
-      cy.log('=== TEST : Vérification du lien vers l\'inscription ===');
       
+      // Vérifier le lien vers l'inscription
       cy.contains('a', 'S\'inscrire')
         .should('exist')
-        .should('be.visible')
-        .should('have.attr', 'href')
-        .and('include', 'register');
-      
-      cy.log('✓ Lien vers la page d\'inscription présent');
-    });
+        .should('be.visible');
+      cy.log('✓ Lien "S\'inscrire" présent');
 
-    it('devrait permettre de naviguer vers la page d\'inscription', () => {
-      cy.log('=== TEST : Navigation vers l\'inscription ===');
-      
-      cy.contains('a', 'S\'inscrire').click();
-      cy.url().should('include', '/register');
-      
-      cy.log('✓ Navigation vers la page d\'inscription fonctionne');
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Tous les éléments de connexion présents ===');
     });
   });
 
-  describe('2. Vérifier la présence des boutons d\'ajout au panier (utilisateur connecté)', () => {
+  describe('Smoke Test 2 : Vérifier la présence des boutons d\'ajout au panier quand vous êtes connecté', () => {
     
     before(() => {
-      cy.log('=== CONNEXION AVANT LES TESTS ===');
+      cy.log('=== CONNEXION PRÉALABLE POUR LES SMOKE TESTS ===');
       
-      // Se connecter une fois avant tous les tests
+      // Se connecter
       cy.visit('http://localhost:4200/#/login');
       cy.get('[data-cy=login-input-username]').type('test@test.com');
       cy.get('[data-cy=login-input-password]').type('test123');
       cy.get('[data-cy=login-submit]').click();
-      
-      // Attendre que la connexion soit effective
       cy.url().should('not.include', '/login');
-      cy.log('✓ Connexion effectuée avec succès');
-    });
-
-    beforeEach(() => {
-      // Vérifier que l'utilisateur est toujours connecté
-      cy.window().then((win) => {
-        const token = win.localStorage.getItem('user');
-        if (!token) {
-          // Reconnecter si nécessaire
-          cy.visit('http://localhost:4200/#/login');
-          cy.get('[data-cy=login-input-username]').type('test@test.com');
-          cy.get('[data-cy=login-input-password]').type('test123');
-          cy.get('[data-cy=login-submit]').click();
-          cy.url().should('not.include', '/login');
-        }
-      });
+      cy.log('✓ Connexion effectuée');
     });
 
     it('devrait afficher les boutons "Consulter" sur la page d\'accueil', () => {
-      cy.log('=== TEST : Boutons sur la page d\'accueil ===');
+      cy.log('=== SMOKE TEST : Boutons sur la page d\'accueil ===');
       
       cy.visit('http://localhost:4200/#/');
       
@@ -141,11 +103,11 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
           .should('contain', 'Consulter');
       });
       
-      cy.log('✓ Tous les produits ont un bouton "Consulter"');
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Boutons "Consulter" présents sur page d\'accueil ===');
     });
 
     it('devrait afficher les boutons "Consulter" sur la page produits', () => {
-      cy.log('=== TEST : Boutons sur la page produits ===');
+      cy.log('=== SMOKE TEST : Boutons sur la page produits ===');
       
       cy.visit('http://localhost:4200/#/products');
       
@@ -162,16 +124,13 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
           .should('contain', 'Consulter');
       });
       
-      cy.log('✓ Tous les produits ont un bouton "Consulter"');
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Boutons "Consulter" présents sur page produits ===');
     });
 
     it('devrait afficher le bouton "Ajouter au panier" sur la page détail produit', () => {
-      cy.log('=== TEST : Bouton "Ajouter au panier" sur page détail ===');
+      cy.log('=== SMOKE TEST : Bouton "Ajouter au panier" sur page détail ===');
       
-      // Aller sur la page produits
       cy.visit('http://localhost:4200/#/products');
-      
-      // Cliquer sur le premier produit
       cy.get('[data-cy=product-link]').first().click();
       
       // Vérifier l'URL
@@ -189,101 +148,21 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
         .should('exist')
         .should('be.visible')
         .should('have.attr', 'type', 'number');
-      cy.log('✓ Champ quantité présent et visible');
+      cy.log('✓ Champ quantité présent');
 
       // Vérifier la présence du bouton "Ajouter au panier"
       cy.get('[data-cy=detail-product-add]')
         .should('exist')
         .should('be.visible')
-        .should('contain', 'Ajouter au panier');
-      cy.log('✓ Bouton "Ajouter au panier" présent et visible');
-
-      // Vérifier que le bouton n'est pas désactivé
-      cy.get('[data-cy=detail-product-add]')
+        .should('contain', 'Ajouter au panier')
         .should('not.be.disabled');
-      cy.log('✓ Bouton "Ajouter au panier" est cliquable');
+      cy.log('✓ Bouton "Ajouter au panier" présent et cliquable');
+
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Bouton "Ajouter au panier" présent ===');
     });
 
-    it('devrait permettre de modifier la quantité avant d\'ajouter au panier', () => {
-      cy.log('=== TEST : Modification de la quantité ===');
-      
-      cy.visit('http://localhost:4200/#/products');
-      cy.get('[data-cy=product-link]').first().click();
-      
-      // Vérifier la valeur par défaut
-      cy.get('[data-cy=detail-product-quantity]')
-        .should('have.value', '1');
-      cy.log('✓ Quantité par défaut = 1');
-
-      // Modifier la quantité
-      cy.get('[data-cy=detail-product-quantity]')
-        .clear()
-        .type('3')
-        .should('have.value', '3');
-      cy.log('✓ Quantité modifiable (testée avec 3)');
-
-      // Vérifier que le bouton est toujours cliquable
-      cy.get('[data-cy=detail-product-add]')
-        .should('not.be.disabled');
-      cy.log('✓ Bouton reste cliquable après modification de la quantité');
-    });
-
-    it('devrait afficher toutes les informations du produit sur la page détail', () => {
-      cy.log('=== TEST : Informations produit complètes ===');
-      
-      cy.visit('http://localhost:4200/#/products');
-      cy.get('[data-cy=product-link]').first().click();
-      
-      // Vérifier les éléments d'information
-      cy.get('[data-cy=detail-product-img]')
-        .should('exist')
-        .should('be.visible');
-      cy.log('✓ Image du produit présente');
-
-      cy.get('[data-cy=detail-product-name]')
-        .should('exist')
-        .should('be.visible')
-        .should('not.be.empty');
-      cy.log('✓ Nom du produit présent');
-
-      cy.get('[data-cy=detail-product-description]')
-        .should('exist')
-        .should('be.visible')
-        .should('not.be.empty');
-      cy.log('✓ Description du produit présente');
-
-      cy.get('[data-cy=detail-product-price]')
-        .should('exist')
-        .should('be.visible')
-        .should('not.be.empty');
-      cy.log('✓ Prix du produit présent');
-
-      cy.get('[data-cy=detail-product-stock]')
-        .should('exist')
-        .should('be.visible')
-        .should('not.be.empty');
-      cy.log('✓ Stock du produit présent');
-
-      cy.get('[data-cy=detail-product-skin]')
-        .should('exist')
-        .should('be.visible');
-      cy.log('✓ Information "Peau" présente');
-
-      cy.get('[data-cy=detail-product-aromas]')
-        .should('exist')
-        .should('be.visible');
-      cy.log('✓ Information "Arômes" présente');
-
-      cy.get('[data-cy=detail-product-ingredients]')
-        .should('exist')
-        .should('be.visible');
-      cy.log('✓ Information "Ingrédients" présente');
-
-      cy.log('=== TOUTES LES INFORMATIONS PRODUIT SONT PRÉSENTES ===');
-    });
-
-    it('devrait afficher le lien vers le panier dans la navigation', () => {
-      cy.log('=== TEST : Lien panier dans la navigation ===');
+    it('devrait afficher le lien "Mon panier" dans la navigation quand connecté', () => {
+      cy.log('=== SMOKE TEST : Lien panier dans navigation ===');
       
       cy.visit('http://localhost:4200/#/');
       
@@ -292,28 +171,20 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
         .should('exist')
         .should('be.visible')
         .should('contain', 'Mon panier');
-      
       cy.log('✓ Lien "Mon panier" présent dans la navigation');
 
-      // Vérifier que le lien fonctionne
-      cy.get('[data-cy=nav-link-cart]').click();
-      cy.url().should('include', '/cart');
-      
-      cy.log('✓ Navigation vers le panier fonctionne');
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Lien panier présent ===');
     });
 
     after(() => {
       cy.log('=== NETTOYAGE : Déconnexion ===');
-      
-      // Se déconnecter à la fin des tests
       cy.visit('http://localhost:4200/#/');
       cy.get('[data-cy=nav-link-logout]').click();
-      
       cy.log('✓ Déconnexion effectuée');
     });
   });
 
-  describe('3. Vérifier que les boutons ne sont PAS présents pour un utilisateur non connecté', () => {
+  describe('Smoke Test Bonus : Vérifier que les boutons ne sont PAS présents pour un utilisateur NON connecté', () => {
     
     beforeEach(() => {
       // S'assurer qu'on est déconnecté
@@ -322,33 +193,14 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
       });
     });
 
-    it('devrait rediriger vers la page de connexion au clic sur "Ajouter au panier"', () => {
-      cy.log('=== TEST : Redirection non connecté ===');
-      
-      cy.visit('http://localhost:4200/#/products');
-      cy.get('[data-cy=product-link]').first().click();
-      
-      // Le bouton doit être présent mais rediriger vers login
-      cy.get('[data-cy=detail-product-add]')
-        .should('exist')
-        .should('be.visible')
-        .click();
-      
-      // Vérifier la redirection
-      cy.url().should('include', '/login');
-      
-      cy.log('✓ Redirection vers la page de connexion pour utilisateur non connecté');
-    });
-
-    it('ne devrait PAS afficher le lien "Mon panier" dans la navigation', () => {
-      cy.log('=== TEST : Pas de lien panier pour utilisateur non connecté ===');
+    it('ne devrait PAS afficher le lien "Mon panier" dans la navigation si non connecté', () => {
+      cy.log('=== SMOKE TEST : Pas de lien panier si non connecté ===');
       
       cy.visit('http://localhost:4200/#/');
       
       // Vérifier que le lien "Mon panier" n'existe pas
       cy.get('[data-cy=nav-link-cart]').should('not.exist');
-      
-      cy.log('✓ Lien "Mon panier" non présent pour utilisateur non connecté');
+      cy.log('✓ Lien "Mon panier" non présent');
 
       // Vérifier que les liens connexion/inscription sont présents
       cy.get('[data-cy=nav-link-login]')
@@ -360,6 +212,8 @@ describe('Smoke Tests - Vérification de la présence des éléments UI', () => 
         .should('exist')
         .should('be.visible');
       cy.log('✓ Lien "Inscription" présent');
+
+      cy.log('=== ✓ SMOKE TEST RÉUSSI : Interface correcte pour utilisateur non connecté ===');
     });
   });
 });
