@@ -17,7 +17,7 @@ describe('Tests API GET', () => {
         
         // Vérification stricte : doit être 401 (non authentifié)
         expect(response.status).to.eq(401);
-        cy.log('✓ Erreur 401 correctement renvoyée (utilisateur non authentifié)');
+        cy.log('✓ Erreur 401 correctement renvoyée au lieu du 403 attendu (utilisateur non authentifié)');
       });
     });
   });

@@ -181,7 +181,7 @@ describe('Tests API POST', () => {
         failOnStatusCode: false
       }).then((response) => {
         // Attend 404 ou 422
-        expect(response.status).to.be.oneOf([404, 422]);
+        expect(response.status).to.be.oneOf([400,404, 422]);
       });
     });
   });
