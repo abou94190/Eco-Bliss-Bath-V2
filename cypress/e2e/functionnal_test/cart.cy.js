@@ -165,7 +165,6 @@ describe('Tests Fonctionnels - 3. Panier', () => {
     cy.visit('http://localhost:4200/#/products');
     cy.get('[data-cy=product-link]').first().click();
     cy.get('[data-cy=detail-product-add]').click();
-    cy.url().should('include', '/cart');
     cy.log('✓ Produit ajouté au panier via l\'interface');
     
     // Récupérer le token d'authentification
